@@ -32,7 +32,7 @@ RUN mv qa-plugin/qa-open-login/providers-sample.php qa-plugin/qa-open-login/prov
  && mv Donut/qa-theme/Donut-theme qa-theme/Donut-theme 
 
 RUN mv /var/www/html/qa-config-example.php ${QA_CONFIG}                     \
- && sed -i -e 's/127.0.0.1/db/g' ${QA_CONFIG}                               \
+ && sed -i -e "s/127.0.0.1/getenv('QA_DB_SERVER')/g" ${QA_CONFIG} \                               \
  && sed -i -e "s/'your-mysql-username'/getenv('QA_DB_USER')/g" ${QA_CONFIG} \
  && sed -i -e "s/'your-mysql-password'/getenv('QA_DB_PASS')/g" ${QA_CONFIG} \
  && sed -i -e "s/'your-mysql-db-name'/getenv('QA_DB_NAME')/g"  ${QA_CONFIG} \
