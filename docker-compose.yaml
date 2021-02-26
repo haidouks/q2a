@@ -26,5 +26,6 @@ services:
       QA_DB_USER: ${DB_USER}
       QA_DB_PASS: ${DB_PASS}
       QA_DB_NAME: ${DB_NAME}
+      QA_DB_SERVER: ${DB_SERVER}
     links:
       - db
