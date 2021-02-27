@@ -9,11 +9,11 @@ RUN apt-get update \
         && rm -r /var/lib/apt/lists/*
 
 
-RUN curl -kL -o /q2a.zip https://github.com/q2a/question2answer/releases/download/v1.8.5/question2answer-1.8.5.zip \
-&& unzip /q2a.zip -d /q2a     \
-&& mv /q2a/*/* /var/www/html/ \
-&& rm /q2a.zip                \
-&& rm -rf /q2a
+RUN curl -kL -o ./q2a.zip http://www.question2answer.org/question2answer-latest.zip \
+&& unzip ./q2a.zip -d ./q2a     \
+&& mv ./q2a/*/* /var/www/html/ \
+&& rm ./q2a.zip                \
+&& rm -rf ./q2a
 
 RUN cd /var/www/html/                                                                                      \
  && git clone https://github.com/amiyasahu/Donut.git                                                       \
@@ -32,11 +32,15 @@ RUN mv qa-plugin/qa-open-login/providers-sample.php qa-plugin/qa-open-login/prov
  && mv Donut/qa-theme/Donut-theme qa-theme/Donut-theme 
 
 RUN mv /var/www/html/qa-config-example.php ${QA_CONFIG}                     \
- && sed -i -e "s/127.0.0.1/getenv('QA_DB_SERVER')/g" ${QA_CONFIG} \                               \
+ && sed -i -e "s/'127.0.0.1'/getenv('QA_DB_SERVER')/g" ${QA_CONFIG}           \ 
  && sed -i -e "s/'your-mysql-username'/getenv('QA_DB_USER')/g" ${QA_CONFIG} \
  && sed -i -e "s/'your-mysql-password'/getenv('QA_DB_PASS')/g" ${QA_CONFIG} \
  && sed -i -e "s/'your-mysql-db-name'/getenv('QA_DB_NAME')/g"  ${QA_CONFIG} \
  && sed -i -e "s/SnowFlat/Donut-theme/" qa-include/app/options.php          \
  && chown -R www-data:www-data /var/www/html/
+
+ENV PORT 8080
+ENTRYPOINT []
+CMD sed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf && docker-php-entrypoint apache2-foreground
 
 RUN docker-php-ext-install mysqli

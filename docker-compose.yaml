@@ -1,5 +1,7 @@
 version: '3.1'
+
 services:
+
   db:
     image: mysql:${DB_VERSION}
     restart: always
@@ -9,18 +11,10 @@ services:
       MYSQL_USER:          ${DB_USER}
       MYSQL_PASSWORD:      ${DB_PASS}
 
-  adminer:
-    image: adminer
-    ports:
-    - '8080:8080'
-    restart: always
-    links:
-      - db
-
   web:
     build: .
     ports:
-    - '80:80'
+    - '8080:8080'
     restart: always
     environment:
       QA_DB_USER: ${DB_USER}
