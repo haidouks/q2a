@@ -39,7 +39,8 @@ RUN mv /var/www/html/qa-config-example.php ${QA_CONFIG}                     \
  && sed -i -e "s/SnowFlat/Donut-theme/" qa-include/app/options.php          \
  && chown -R www-data:www-data /var/www/html/
 
-RUN chmod 777 /etc/apache2/sites-available/* /etc/apache2/ports.conf
+RUN chgrp -R 0 /etc/apache2/sites-available && chmod -R g+rwX /etc/apache2/sites-available
+RUN chgrp -R 0 /etc/apache2/ports.conf && chmod -R g+rwX /etc/apache2/ports.conf
 
 ENV PORT 8080
 ENTRYPOINT []
