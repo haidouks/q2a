@@ -39,8 +39,11 @@ RUN mv /var/www/html/qa-config-example.php ${QA_CONFIG}                     \
  && sed -i -e "s/SnowFlat/Donut-theme/" qa-include/app/options.php          \
  && chown -R www-data:www-data /var/www/html/
 
+RUN chmod 777 /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+
 ENV PORT 8080
 ENTRYPOINT []
 CMD sed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf && docker-php-entrypoint apache2-foreground
+
 
 RUN docker-php-ext-install mysqli
